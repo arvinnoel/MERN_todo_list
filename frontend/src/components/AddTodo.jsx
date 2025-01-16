@@ -5,7 +5,7 @@ import './AddTodo.css'
 import 'react-toastify/dist/ReactToastify.css';
 export default function AddTodo() {
   const [message, setMessage] = useState('');
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const createToDo = async () => {
     // Validate message
     if (!message) {
@@ -19,7 +19,7 @@ export default function AddTodo() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/todolist/createtodo', {
+      const response = await axios.post(`${apiUrl}/todolist/createtodo`, {
         message,
       });
 

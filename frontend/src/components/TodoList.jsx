@@ -4,24 +4,29 @@ import { toast } from "react-toastify";
 import axios from 'axios';
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([]);  // Default to an empty array
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({ _id: null, message: "" });
+  const [loading, setLoading] = useState(true);  // Loading state
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   // Fetch all todos
   const getAllTodos = async () => {
+    setLoading(true); // Start loading when fetching data
     try {
-      const response = await axios.get('http://localhost:3000/todolist/getall');
-      setTodos(response.data.data);
+      const response = await axios.get(`${apiUrl}/todolist/getall`);
+      setTodos(response.data.data || []);  // Ensure response is handled even if empty
     } catch (error) {
       console.error(error);
       toast.error('Failed to fetch todos.');
+    } finally {
+      setLoading(false);  // Stop loading after fetch
     }
   };
 
   useEffect(() => {
     getAllTodos();
-  }, []);
+  }, []);  // Fetch todos when component mounts
 
   // Start editing a todo
   const handleEdit = (todo) => {
@@ -37,14 +42,13 @@ const TodoList = () => {
 
   // Update a todo
   const handleUpdate = async () => {
-    // Validate the message
     if (currentTodo.message.length < 4 || currentTodo.message.length > 20) {
       toast.error('Message must be between 4 and 20 characters.');
       return;
     }
 
     try {
-      const result = await axios.put(`http://localhost:3000/todolist/updateToDo/${currentTodo._id}`, {
+      const result = await axios.put(`${apiUrl}/todolist/updateToDo/${currentTodo._id}`, {
         message: currentTodo.message,
       });
 
@@ -52,7 +56,7 @@ const TodoList = () => {
         toast.success('Todo updated successfully!');
         setCurrentTodo({ _id: null, message: "" });
         setIsEditing(false);
-        getAllTodos();
+        getAllTodos();  // Refresh the todos after update
       }
     } catch (error) {
       console.error(error);
@@ -63,10 +67,10 @@ const TodoList = () => {
   // Delete a todo
   const handleDelete = async (id) => {
     try {
-      const result = await axios.delete(`http://localhost:3000/todolist/deleteToDo/${id}`);
+      const result = await axios.delete(`${apiUrl}/todolist/deleteToDo/${id}`);
       if (result.data.success === 'deleted') {
         toast.success('Todo deleted successfully!');
-        getAllTodos();
+        getAllTodos();  // Refresh the todos after delete
       }
     } catch (error) {
       console.error(error);
@@ -90,23 +94,29 @@ const TodoList = () => {
         </div>
       ) : (
         <ul className="todo-list">
-          {todos.map((todo) => (
-            <li key={todo._id} className="todo-item">
-              <span>{todo.message}</span>
-              <AiFillEdit
-                className="icon edit-icon"
-                onClick={() => handleEdit(todo)}
-              />
-              <AiOutlineDelete
-                className="icon delete-icon"
-                onClick={() => handleDelete(todo._id)}
-              />
-            </li>
-          ))}
+          {loading ? (
+            <li>Loading...</li>  // Show loading while fetching todos
+          ) : todos.length > 0 ? (
+            todos.map((todo) => (
+              <li key={todo._id} className="todo-item">
+                <span>{todo.message}</span>
+                <AiFillEdit
+                  className="icon edit-icon"
+                  onClick={() => handleEdit(todo)}
+                />
+                <AiOutlineDelete
+                  className="icon delete-icon"
+                  onClick={() => handleDelete(todo._id)}
+                />
+              </li>
+            ))
+          ) : (
+            <li className="no-todos">No todos available</li>  // Show message when no todos
+          )}
         </ul>
       )}
     </div>
   );
 };
 
-export default TodoList
+export default TodoList;
