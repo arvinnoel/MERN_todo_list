@@ -9,7 +9,7 @@ const TodoList = () => {
   const [currentTodo, setCurrentTodo] = useState({ _id: null, message: "" });
   const [loading, setLoading] = useState(true); 
   // const apiUrl = process.env.REACT_APP_API_URL;
-  const apiUrl = process.env.REACT_APP_API_URL
+  const apiUrl = process.env.BACKEND_URI;
   console.log(process.env.REACT_APP_API_URL); 
 
   const getAllTodos = async () => {
@@ -92,7 +92,7 @@ const TodoList = () => {
       ) : (
         <ul className="todo-list">
           {loading ? (
-            <li>Loading...</li>  // Show loading while fetching todos
+            <li>Loading...</li> 
           ) : todos.length > 0 ? (
             todos.map((todo) => (
               <li key={todo._id} className="todo-item">

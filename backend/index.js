@@ -7,13 +7,11 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-// Define the allowed origins
 const allowedOrigins = [
-  'https://react-todo-list-2ml3.onrender.com', // Production URL
-  'http://localhost:5173', // Local development URL
+  'https://react-todo-list-2ml3.onrender.com', 
+  'http://localhost:5173', 
 ];
 
-// CORS middleware configuration
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -24,12 +22,10 @@ app.use(cors({
   }
 }));
 
-// Set up middleware and routes
 app.use(express.json());
 RunServer();
 app.use('/todolist', todoRouter);
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

@@ -7,7 +7,6 @@ export default function AddTodo() {
   const [message, setMessage] = useState('');
   const apiUrl = process.env.REACT_APP_API_URL;
   const createToDo = async () => {
-    // Validate message
     if (!message) {
       toast.error('Cannot add an empty message');
       return;
@@ -25,7 +24,6 @@ export default function AddTodo() {
 
       if (response.data.success === 'created') {
         toast.success('Todo created successfully');
-        // alert('Todo created successfully');
         window.location.reload();
       }
     } catch (error) {
@@ -36,7 +34,6 @@ export default function AddTodo() {
 
   return (
     <div className="container">
-      {/* Input for message */}
       <input
         type="text"
         placeholder="Add todo here"
