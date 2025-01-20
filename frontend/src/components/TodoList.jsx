@@ -8,8 +8,7 @@ const TodoList = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({ _id: null, message: "" });
   const [loading, setLoading] = useState(true); 
-  // const apiUrl = process.env.REACT_APP_API_URL;
-  const apiUrl = process.env.BACKEND_URI;
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
   console.log(process.env.REACT_APP_API_URL); 
 
   const getAllTodos = async () => {
@@ -108,7 +107,7 @@ const TodoList = () => {
               </li>
             ))
           ) : (
-            <li className="no-todos">No todos available</li>  // Show message when no todos
+            <li className="no-todos">No todos available</li>  
           )}
         </ul>
       )}

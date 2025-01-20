@@ -5,7 +5,7 @@ import './AddTodo.css'
 import 'react-toastify/dist/ReactToastify.css';
 export default function AddTodo() {
   const [message, setMessage] = useState('');
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const createToDo = async () => {
     if (!message) {
       toast.error('Cannot add an empty message');

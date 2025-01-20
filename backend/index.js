@@ -8,19 +8,21 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  'https://react-todo-list-2ml3.onrender.com', 
+  'https://react-todo-list-4jyj.onrender.com', 
   'http://localhost:5173', 
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); 
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS')); 
+      console.log('CORS Error:', origin); // Log the origin causing issues
+      callback(new Error('Not allowed by CORS'));
     }
   }
 }));
+
 
 app.use(express.json());
 RunServer();
@@ -28,4 +30,6 @@ app.use('/todolist', todoRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log("Server running on port:", process.env.PORT);
+
 });
