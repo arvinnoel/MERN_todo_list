@@ -8,8 +8,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  'https://react-todo-list-4jyj.onrender.com', 
-  'http://localhost:5173', 
+  'https://react-todo-list-4jyj.onrender.com',
+  'http://localhost:5173',
+  'http://51.20.138.101/'
 ];
 
 app.use(cors({

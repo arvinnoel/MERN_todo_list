@@ -4,29 +4,28 @@ import { toast } from "react-toastify";
 import axios from 'axios';
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([]);  
+  const [todos, setTodos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({ _id: null, message: "" });
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
-  console.log(process.env.REACT_APP_API_URL); 
 
   const getAllTodos = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const response = await axios.get(`${apiUrl}/todolist/getall`);
-      setTodos(response.data.data || []);  
+      setTodos(response.data.data || []);
     } catch (error) {
       console.error(error);
       toast.error('Failed to fetch todos.');
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getAllTodos();
-  }, []);  
+  }, []);
 
   const handleEdit = (todo) => {
     setIsEditing(true);
@@ -53,7 +52,7 @@ const TodoList = () => {
         toast.success('Todo updated successfully!');
         setCurrentTodo({ _id: null, message: "" });
         setIsEditing(false);
-        getAllTodos();  
+        getAllTodos();
       }
     } catch (error) {
       console.error(error);
@@ -66,7 +65,7 @@ const TodoList = () => {
       const result = await axios.delete(`${apiUrl}/todolist/deleteToDo/${id}`);
       if (result.data.success === 'deleted') {
         toast.success('Todo deleted successfully!');
-        getAllTodos(); 
+        getAllTodos();
       }
     } catch (error) {
       console.error(error);
@@ -91,7 +90,7 @@ const TodoList = () => {
       ) : (
         <ul className="todo-list">
           {loading ? (
-            <li>Loading...</li> 
+            <li>Loading...</li>
           ) : todos.length > 0 ? (
             todos.map((todo) => (
               <li key={todo._id} className="todo-item">
@@ -107,7 +106,7 @@ const TodoList = () => {
               </li>
             ))
           ) : (
-            <li className="no-todos">No todos available</li>  
+            <li className="no-todos">No todos available</li>
           )}
         </ul>
       )}
