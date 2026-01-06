@@ -14,10 +14,10 @@ app.use(express.json())
 RunServer()
 
 // Mount router at /api
-app.use('/api', todoRouter)
+app.use('/todolist', todoRouter)
 
 // Optional health check
-app.get('/api', (req, res) => {
+app.get('/todolist', (req, res) => {
   res.json({ message: 'API is working' })
 })
 
